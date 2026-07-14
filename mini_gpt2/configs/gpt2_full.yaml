@@ -1,0 +1,49 @@
+# configs/gpt2_full.yaml
+# ─────────────────────────────────────────────────────────────────────────────
+# Full GPT-2 (124M) config  |  ~127M parameters  [BONUS CONFIG]
+# Requires a multi-GB GPU. Only run this if you have serious compute.
+# Matches the original OpenAI GPT-2 (small) architecture exactly.
+# ─────────────────────────────────────────────────────────────────────────────
+#
+# Reference: Radford et al. (2019) "Language Models are Unsupervised Multitask Learners"
+#
+# Parameter breakdown:
+#   Token embedding    : 50257 × 768  =  38.6M
+#   Position embedding : 1024  × 768  =   0.8M
+#   Per block          : ~7.1M         × 12 layers = ~85.1M
+#   LM head (tied)     :           0   (shared with wte)
+#   Total              : ~124.4M params
+# ─────────────────────────────────────────────────────────────────────────────
+
+# NOTE: To use this config with our custom BPE tokenizer, you must set
+#       vocab_size to match your trained tokenizer. 50257 is the original
+#       GPT-2 tiktoken vocabulary. For our BPE tokenizer use 2048 or higher.
+
+# Model Architecture
+vocab_size: 50257           # Original GPT-2 vocab — requires tiktoken
+block_size: 1024
+n_layer: 12
+n_head: 12
+n_embd: 768
+dropout: 0.0                # GPT-2 was trained without dropout
+norm_type: layernorm
+pos_emb_type: absolute
+mlp_type: gelu
+n_kv_head: null             # Standard MHA
+
+# Training Hyperparameters (scaled for full pre-training; adjust for fine-tuning)
+batch_size: 8               # Use gradient accumulation for larger effective batch
+learning_rate: 3.0e-4
+max_iters: 600000
+weight_decay: 0.1
+beta1: 0.9
+beta2: 0.95
+grad_clip: 1.0
+
+# LR Schedule
+warmup_iters: 2000
+min_lr: 3.0e-5
+
+# Evaluation
+eval_interval: 500
+eval_iters: 200
