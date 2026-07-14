@@ -1,0 +1,42 @@
+# configs/tiny.yaml
+# ─────────────────────────────────────────────────────────────────────────────
+# Tiny GPT-2 config  |  ~0.8M parameters
+# Trains in ~2 minutes on CPU. Good for quick experiments and smoke tests.
+# ─────────────────────────────────────────────────────────────────────────────
+#
+# Parameter breakdown:
+#   Token embedding    : 2048 × 128  =  262,144
+#   Position embedding : 256  × 128  =   32,768
+#   Per block          : ~94,000      × 4 layers = ~376,000
+#   LM head (tied)     :           0  (shared with wte)
+#   Total              : ~671K params
+# ─────────────────────────────────────────────────────────────────────────────
+
+# Model Architecture
+vocab_size: 2048
+block_size: 256
+n_layer: 4
+n_head: 4
+n_embd: 128
+dropout: 0.1
+norm_type: layernorm        # 'layernorm' | 'rmsnorm'
+pos_emb_type: absolute      # 'absolute' | 'rope'
+mlp_type: gelu              # 'gelu' | 'swiglu'
+n_kv_head: null             # null = standard MHA; integer = GQA
+
+# Training Hyperparameters
+batch_size: 32
+learning_rate: 6.0e-4
+max_iters: 600
+weight_decay: 0.1
+beta1: 0.9
+beta2: 0.95
+grad_clip: 1.0
+
+# LR Schedule
+warmup_iters: 50
+min_lr: 6.0e-5
+
+# Evaluation
+eval_interval: 50
+eval_iters: 20

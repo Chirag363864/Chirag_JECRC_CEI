@@ -1,0 +1,14 @@
+# Mini GPT-2 from Scratch — Python Dependencies
+# Install with: pip install -r requirements.txt
+
+# Core deep learning framework (PyTorch 2.0+ required for torch.compile support)
+torch>=2.0.0
+
+# Web dashboard (Flask + WSGI server)
+flask>=3.0.0
+
+# Numerical computing (memory-mapped dataset arrays)
+numpy>=1.24.0
+
+# Optional: loss curve visualization (used by plot_loss.py)
+matplotlib>=3.7.0
